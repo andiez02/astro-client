@@ -6,6 +6,7 @@ import { blo } from 'blo';
 import { ChevronDown, ChevronUp, CopyIcon, UserIcon } from "lucide-react";
 import { useState, useRef } from "react";
 import { useDisconnect } from "wagmi";
+import { toast } from "sonner";
 
 export default function WalletConnector() {
     const [isHovering, setIsHovering] = useState(false);
@@ -27,6 +28,7 @@ export default function WalletConnector() {
 
     const copyAddress = (address: string) => {
         navigator.clipboard.writeText(address);
+        toast.success('Address copied to clipboard');
     };
 
     return (

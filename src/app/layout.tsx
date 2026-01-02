@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Web3Provider } from "@/src/components/providers/Web3Provider";
+import { Toaster } from 'sonner'
 import Header from "@/src/components/layout/Header";
 import { SuppressLitWarning } from "@/src/components/SuppressLitWarning";
 
@@ -41,6 +42,10 @@ export default function RootLayout({
       >
         <SuppressLitWarning />
         <Web3Provider>
+          <Toaster
+            position="bottom-right"
+            richColors
+            closeButton />
           <Header />
           {children}
         </Web3Provider>
