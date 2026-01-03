@@ -42,6 +42,7 @@ App Layout
 **Bước 1:** Người dùng click vào `ConnectButton` (RainbowKit)
 
 **Bước 2:** RainbowKit hiển thị modal chọn ví:
+
 - MetaMask
 - WalletConnect
 - Coinbase Wallet
@@ -50,6 +51,7 @@ App Layout
 **Bước 3:** Người dùng chấp nhận kết nối trong ví
 
 **Bước 4:** Wagmi lưu trạng thái kết nối:
+
 - `isConnected = true`
 - `address` được lưu
 - `chainId` được lưu
@@ -61,6 +63,7 @@ App Layout
 **File:** `src/common/hooks/useAutoLogin.ts`
 
 Luồng tự động đăng nhập được trigger khi:
+
 - Ví được kết nối (`isConnected = true`)
 - Địa chỉ ví thay đổi
 - Chain ID thay đổi
@@ -72,6 +75,7 @@ const hasValidToken = api.auth.checkAuth();
 ```
 
 **Logic:**
+
 - Kiểm tra token trong `localStorage` (key: `astro_access_token`)
 - Nếu token tồn tại và chưa hết hạn → Skip auto-login
 - Nếu địa chỉ ví thay đổi → Logout session cũ
@@ -90,11 +94,13 @@ if (chainId !== SEPOLIA_CHAIN_ID) {
 #### 3.3. Lấy Nonce từ Backend
 
 **API Call:**
+
 ```typescript
 GET /auth/nonce?address={address}
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -111,17 +117,18 @@ GET /auth/nonce?address={address}
 
 ```typescript
 const message = new SiweMessage({
-  domain: window.location.host,        // Domain hiện tại
-  address,                              // Địa chỉ ví
-  statement: 'Sign in with Ethereum to Krypto Marketplace.',
-  uri: window.location.origin,         // Origin URL
+  domain: window.location.host, // Domain hiện tại
+  address, // Địa chỉ ví
+  statement: 'Sign in with Ethereum to Astro Marketplace.',
+  uri: window.location.origin, // Origin URL
   version: '1',
-  chainId: SEPOLIA_CHAIN_ID,           // 11155111
-  nonce,                                // Nonce từ backend
+  chainId: SEPOLIA_CHAIN_ID, // 11155111
+  nonce, // Nonce từ backend
 });
 ```
 
 **Message format:**
+
 ```
 {domain} wants you to sign in with your Ethereum account:
 {address}
@@ -142,6 +149,7 @@ const signature = await signMessageAsync({ message: messageString });
 ```
 
 **Quá trình:**
+
 - Wagmi hiển thị popup yêu cầu ký message
 - Người dùng xác nhận trong ví (MetaMask popup)
 - Ví trả về signature (chuỗi hex)
@@ -149,6 +157,7 @@ const signature = await signMessageAsync({ message: messageString });
 #### 3.6. Verify và Lấy Access Token
 
 **API Call:**
+
 ```typescript
 POST /auth/login
 Body: {
@@ -158,6 +167,7 @@ Body: {
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -169,6 +179,7 @@ Body: {
 **File:** `src/services/controllers/auth/AuthService.ts` - `login()`
 
 **Backend xử lý:**
+
 1. Verify signature với địa chỉ ví
 2. Verify nonce còn hợp lệ
 3. Verify domain và chain ID
@@ -203,7 +214,7 @@ getNonce: async () => {
   }
   const nonce = await api.auth.getNonce(account.address);
   return nonce;
-}
+};
 ```
 
 #### 4.2. createMessage()
@@ -213,13 +224,13 @@ createMessage: ({ nonce, address, chainId }) => {
   return new SiweMessage({
     domain: window.location.host,
     address,
-    statement: 'Sign in with Ethereum to Krypto Marketplace.',
+    statement: 'Sign in with Ethereum to Astro Marketplace.',
     uri: window.location.origin,
     version: '1',
     chainId,
     nonce,
   });
-}
+};
 ```
 
 #### 4.3. verify()
@@ -228,12 +239,12 @@ createMessage: ({ nonce, address, chainId }) => {
 verify: async ({ message, signature }) => {
   const siweMessage = message as SiweMessage;
   const messageString = siweMessage.prepareMessage();
-  
+
   const { accessToken } = await api.auth.login(messageString, signature);
   api.auth.saveToken(accessToken);
-  
+
   return true;
-}
+};
 ```
 
 #### 4.4. signOut()
@@ -241,7 +252,7 @@ verify: async ({ message, signature }) => {
 ```typescript
 signOut: async () => {
   api.auth.logout();
-}
+};
 ```
 
 ---
@@ -251,29 +262,37 @@ signOut: async () => {
 **File:** `src/services/controllers/auth/AuthService.ts`
 
 #### 5.1. Lưu Token
+
 ```typescript
 saveToken(token: string): void
 ```
+
 - Lưu vào `localStorage` với key `astro_access_token`
 
 #### 5.2. Lấy Token
+
 ```typescript
 getToken(): string | null
 ```
+
 - Đọc từ `localStorage`
 
 #### 5.3. Kiểm tra Token
+
 ```typescript
 checkAuth(): boolean
 ```
+
 - Kiểm tra token có tồn tại
 - Nếu là JWT, kiểm tra expiration time
 - Trả về `true` nếu token hợp lệ
 
 #### 5.4. Xóa Token
+
 ```typescript
 logout(): void
 ```
+
 - Xóa token khỏi `localStorage`
 
 ---
@@ -283,12 +302,14 @@ logout(): void
 **File:** `src/services/apiClient.ts`
 
 **Base Configuration:**
+
 - Base URL: `process.env.NEXT_PUBLIC_API_URL`
 - Timeout: 15000ms
 - Request interceptor: Thêm `Cache-Control: no-cache`
 - Response interceptor: Xử lý errors
 
 **File:** `src/services/apiService.ts`
+
 - Export singleton instance `api`
 - Cung cấp `api.auth` để gọi các method authentication
 
@@ -321,22 +342,27 @@ User                    Wallet              Frontend              Backend
 ## Các trường hợp xử lý
 
 ### 1. Token đã tồn tại và hợp lệ
+
 - **Hành động:** Skip auto-login
 - **Logic:** Kiểm tra `checkAuth()` trước khi thực hiện login
 
 ### 2. Địa chỉ ví thay đổi
+
 - **Hành động:** Logout session cũ, login với địa chỉ mới
 - **Logic:** So sánh `lastAddress.current` với `address` hiện tại
 
 ### 3. Sai Chain ID
+
 - **Hành động:** Tự động chuyển sang Sepolia testnet
 - **Logic:** Kiểm tra `chainId !== SEPOLIA_CHAIN_ID` và gọi `switchChainAsync()`
 
 ### 4. Lỗi trong quá trình login
+
 - **Hành động:** Reset `isLoggingIn` flag, log error
 - **Logic:** Try-catch trong `performLogin()`, cleanup trong `finally`
 
 ### 5. Ngăn chặn multiple login attempts
+
 - **Cơ chế:** Sử dụng `useRef` để track `isLoggingIn` state
 - **Logic:** Kiểm tra flag trước khi thực hiện login
 
@@ -364,12 +390,15 @@ NEXT_PUBLIC_PROJECT_ID=your-walletconnect-project-id
 ## Security Considerations
 
 1. **Token Storage:** Token được lưu trong `localStorage` (có thể bị XSS attack)
+
    - **Cải thiện:** Cân nhắc dùng `httpOnly` cookies hoặc secure storage
 
 2. **Nonce:** Mỗi nonce chỉ dùng một lần, có thời gian hết hạn
+
    - Backend phải verify nonce chưa được sử dụng
 
 3. **Signature Verification:** Backend phải verify:
+
    - Signature khớp với address
    - Message domain/chain ID đúng
    - Nonce hợp lệ và chưa dùng
@@ -381,21 +410,25 @@ NEXT_PUBLIC_PROJECT_ID=your-walletconnect-project-id
 ## Testing Flow
 
 1. **Connect Wallet:**
+
    - Click ConnectButton
    - Chọn ví (MetaMask)
    - Approve connection
 
 2. **Auto-Login:**
+
    - Kiểm tra console logs
    - Verify token được lưu vào localStorage
    - Refresh page, verify vẫn authenticated
 
 3. **Manual Login:**
+
    - Disconnect wallet
    - Connect lại
    - Sử dụng RainbowKit auth modal
 
 4. **Logout:**
+
    - Click logout button
    - Verify token bị xóa
    - Verify phải login lại
@@ -410,20 +443,23 @@ NEXT_PUBLIC_PROJECT_ID=your-walletconnect-project-id
 ## Troubleshooting
 
 ### Token không được lưu
+
 - Kiểm tra `localStorage` có available không
 - Kiểm tra browser có block localStorage không
 
 ### Auto-login không chạy
+
 - Kiểm tra `isConnected` và `address` có giá trị không
 - Kiểm tra `isLoggingIn` flag có bị stuck không
 - Kiểm tra console logs để debug
 
 ### Signature verification failed
+
 - Kiểm tra message format đúng chưa
 - Kiểm tra chain ID đúng chưa
 - Kiểm tra nonce còn hợp lệ không
 
 ### Chain switch failed
+
 - Kiểm tra ví có hỗ trợ Sepolia không
 - Kiểm tra user có approve chain switch không
-

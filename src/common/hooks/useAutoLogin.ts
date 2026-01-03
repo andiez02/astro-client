@@ -85,7 +85,7 @@ export function useAutoLogin() {
         const message = new SiweMessage({
           domain: window.location.host,
           address,
-          statement: 'Sign in with Ethereum to Krypto Marketplace.',
+          statement: 'Sign in with Ethereum to Astro Marketplace.',
           uri: window.location.origin,
           version: '1',
           chainId: SEPOLIA_CHAIN_ID,

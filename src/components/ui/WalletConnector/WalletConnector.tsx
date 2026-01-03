@@ -4,27 +4,64 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { blo } from 'blo';
 import { ChevronDown, ChevronUp, CopyIcon, UserIcon } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDisconnect } from "wagmi";
 import { toast } from "sonner";
 
 export default function WalletConnector() {
     const [isHovering, setIsHovering] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const { disconnect } = useDisconnect();
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleMouseEnter = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
+        // Only enable hover on desktop (md and above)
+        if (window.innerWidth >= 768) {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            setIsHovering(true);
         }
-        setIsHovering(true);
     };
 
     const handleMouseLeave = () => {
-        timeoutRef.current = setTimeout(() => {
-            setIsHovering(false);
-        }, 150);
+        // Only enable hover on desktop (md and above)
+        if (window.innerWidth >= 768) {
+            timeoutRef.current = setTimeout(() => {
+                setIsHovering(false);
+            }, 150);
+        }
     };
+
+    const handleClick = () => {
+        // On mobile, toggle dropdown. On desktop, hover handles it.
+        if (window.innerWidth < 768) {
+            setIsOpen(!isOpen);
+        }
+    };
+
+    // Close dropdown when clicking outside (mobile)
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+            // Prevent body scroll on mobile when dropdown is open
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
     const copyAddress = (address: string) => {
         navigator.clipboard.writeText(address);
@@ -43,8 +80,6 @@ export default function WalletConnector() {
                     authenticationStatus,
                     mounted,
                 }) => {
-
-                    console.log('🥦 ~ WalletConnector ~ account:', account)
 
                     // 1. Check mounted state to avoid Next.js hydration error
                     const ready = mounted && authenticationStatus !== 'loading';
@@ -100,13 +135,14 @@ export default function WalletConnector() {
                                         </button>
                                         {/* Show user information (Balance + Address) */}
                                         <div
-                                            className="relative -2"
+                                            ref={dropdownRef}
+                                            className="relative"
                                             onMouseEnter={handleMouseEnter}
                                             onMouseLeave={handleMouseLeave}
                                         >
                                             <div
-                                                // onClick={openAccountModal}
-                                                className="flex items-center gap-2 cursor-pointer"
+                                                onClick={handleClick}
+                                                className="flex items-center gap-2 cursor-pointer md:cursor-default"
                                             >
                                                 {/* Show ENS avatar if available */}
                                                 {account.ensAvatar ? (
@@ -129,16 +165,24 @@ export default function WalletConnector() {
                                                     {account.displayName}
                                                 </span>
 
-                                                {isHovering ? (
+                                                {(isHovering || isOpen) ? (
                                                     <ChevronUp className="w-4 h-4 text-gray-500" />
                                                 ) : (
                                                     <ChevronDown className="w-4 h-4 text-gray-500" />
                                                 )}
                                             </div>
 
-                                            {/* Hover Dropdown Box */}
+                                            {/* Mobile Backdrop */}
+                                            {isOpen && (
+                                                <div
+                                                    className="fixed inset-0 bg-black/20 z-40 md:hidden"
+                                                    onClick={() => setIsOpen(false)}
+                                                />
+                                            )}
+
+                                            {/* Dropdown Box */}
                                             <div
-                                                className={`absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50 transition-all duration-150 ease-out font-sans ${isHovering
+                                                className={`absolute right-0 top-full mt-2 w-60 sm:w-72 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50 transition-all duration-150 ease-out font-sans ${isHovering || isOpen
                                                     ? 'opacity-100 translate-y-0 pointer-events-auto'
                                                     : 'opacity-0 -translate-y-2 pointer-events-none'
                                                     }`}
@@ -209,14 +253,20 @@ export default function WalletConnector() {
                                                 {/* Actions */}
                                                 <div className="p-2 bg-gray-50/30">
                                                     <button
-                                                        // onClick={openAccountModal}
+                                                        onClick={() => {
+                                                            setIsOpen(false);
+                                                            // openAccountModal();
+                                                        }}
                                                         className="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-white hover:shadow-sm rounded-xl transition-all text-sm font-medium group font-sans"
                                                     >
                                                         <UserIcon className="w-5 h-5 text-gray-500 group-hover:text-purple-600 transition-colors" />
                                                         Profile
                                                     </button>
                                                     <button
-                                                        onClick={openChainModal}
+                                                        onClick={() => {
+                                                            setIsOpen(false);
+                                                            openChainModal();
+                                                        }}
                                                         className="w-full flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-white hover:shadow-sm rounded-xl transition-all text-sm font-medium group font-sans"
                                                     >
                                                         <svg className="w-5 h-5 text-gray-500 group-hover:text-purple-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +275,10 @@ export default function WalletConnector() {
                                                         Switch Network
                                                     </button>
                                                     <button
-                                                        onClick={() => disconnect()}
+                                                        onClick={() => {
+                                                            setIsOpen(false);
+                                                            disconnect();
+                                                        }}
                                                         className="w-full flex items-center gap-3 px-3 py-2.5 text-red-600 hover:bg-red-50 hover:shadow-sm rounded-xl transition-all text-sm font-medium group font-sans"
                                                     >
                                                         <svg className="w-5 h-5 text-red-500 group-hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

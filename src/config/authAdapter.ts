@@ -22,7 +22,7 @@ export const authenticationAdapter = createAuthenticationAdapter({
     return new SiweMessage({
       domain: window.location.host,
       address,
-      statement: 'Sign in with Ethereum to Krypto Marketplace.',
+      statement: 'Sign in with Ethereum to Astro Marketplace.',
       uri: window.location.origin,
       version: '1',
       chainId,
