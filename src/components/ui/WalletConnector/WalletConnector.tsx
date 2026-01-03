@@ -130,9 +130,6 @@ export default function WalletConnector() {
                                 // 4. Connected -> Show balance + address
                                 return (
                                     <div className="flex items-center gap-3">
-                                        <button className="bg-black text-white text-sm px-4 py-2 rounded-full font-semibold hover:bg-gray-800 transition-all active:scale-95 font-display cursor-pointer">
-                                            Create
-                                        </button>
                                         {/* Show user information (Balance + Address) */}
                                         <div
                                             ref={dropdownRef}

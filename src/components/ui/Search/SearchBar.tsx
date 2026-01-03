@@ -13,7 +13,7 @@ export default function SearchBar() {
     return (
         <div
             onClick={handleContainerClick}
-            className="flex items-center w-[280px] sm:w-[350px] md:w-[400px] lg:w-[500px] gap-2 border border-gray-300 bg-neutral rounded-lg px-3 sm:px-4 py-2 cursor-text"
+            className="flex items-center w-[280px] sm:w-[350px] md:w-[400px] lg:w-[450px] h-[42px] mt-4 gap-2 border border-gray-300 bg-neutral rounded-lg px-3 sm:px-4 py-2 cursor-text"
         >
             <button
                 type="button"

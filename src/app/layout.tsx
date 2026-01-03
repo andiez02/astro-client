@@ -5,6 +5,7 @@ import { Web3Provider } from "@/src/components/providers/Web3Provider";
 import { Toaster } from 'sonner'
 import Header from "@/src/components/layout/Header";
 import { SuppressLitWarning } from "@/src/components/SuppressLitWarning";
+import Sidebar from "@/src/components/layout/Sidebar";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -47,6 +48,7 @@ export default function RootLayout({
             richColors
             closeButton />
           <Header />
+          <Sidebar />
           {children}
         </Web3Provider>
       </body>
