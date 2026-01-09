@@ -8,6 +8,8 @@ import { SuppressLitWarning } from "@/src/components/SuppressLitWarning";
 import Sidebar from "@/src/components/layout/Sidebar";
 import { ModalProvider } from "../components/providers/ModalProvider";
 import { ThemeProvider } from "../components/providers/ThemeProvider";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({
   subsets: ['latin'],
@@ -47,6 +49,8 @@ export default function RootLayout({
         <ThemeProvider>
           <Web3Provider>
             <ModalProvider>
+              <Analytics />
+              <SpeedInsights />
               <Toaster
                 position="bottom-right"
                 richColors
