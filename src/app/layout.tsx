@@ -6,6 +6,8 @@ import { Toaster } from 'sonner'
 import Header from "@/src/components/layout/Header";
 import { SuppressLitWarning } from "@/src/components/SuppressLitWarning";
 import Sidebar from "@/src/components/layout/Sidebar";
+import { ModalProvider } from "../components/providers/ModalProvider";
+import { ThemeProvider } from "../components/providers/ThemeProvider";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,20 +39,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${poppins.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <SuppressLitWarning />
-        <Web3Provider>
-          <Toaster
-            position="bottom-right"
-            richColors
-            closeButton />
-          <Header />
-          <Sidebar />
-          {children}
-        </Web3Provider>
+        <ThemeProvider>
+          <Web3Provider>
+            <ModalProvider>
+              <Toaster
+                position="bottom-right"
+                richColors
+                closeButton />
+              <Header />
+              <Sidebar />
+              {children}
+            </ModalProvider>
+          </Web3Provider>
+        </ThemeProvider>
       </body>
     </html>
   );
