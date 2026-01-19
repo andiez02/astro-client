@@ -125,10 +125,9 @@ export function CreateNFTModal({ onClose }: { onClose: () => void }) {
                                     className={`
                                         flex items-center gap-2 px-3 py-2 rounded-lg text-md font-semibold
                                         transition-colors cursor-pointer text-left
-                                        ${
-                                            isActive
-                                                ? 'bg-gray-200'
-                                                : 'bg-transparent hover:bg-gray-100'
+                                        ${isActive
+                                            ? 'bg-gray-200'
+                                            : 'bg-transparent hover:bg-gray-100'
                                         }
                                     `}
                                 >
