@@ -1,5 +1,5 @@
-import { useModal } from "./hooks/useModal";
-import { CreateNFTModal } from "./modals/CreateNFTModal";
+import { useModal } from './hooks/useModal'
+import { CreateNFTModal } from './modals/CreateNFTModal'
 
 function ModalHost() {
     const { state, close } = useModal()
@@ -12,4 +12,4 @@ function ModalHost() {
     }
 }
 
-export default ModalHost;
+export default ModalHost

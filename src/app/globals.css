@@ -4,49 +4,49 @@
    Base (Light theme)
 -------------------- */
 :root {
-  --background: 255 255 255;
-  --foreground: 23 23 23;
+    --background: 255 255 255;
+    --foreground: 23 23 23;
 
-  --color-primary: 108 93 211;
-  --color-secondary: 0 209 255;
-  --color-neutral: 229 229 229;
+    --color-primary: 108 93 211;
+    --color-secondary: 0 209 255;
+    --color-neutral: 229 229 229;
 
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+    --font-sans: var(--font-inter);
+    --font-mono: var(--font-jetbrains-mono);
 }
 
 /* --------------------
    Dark theme
 -------------------- */
 .dark {
-  --background: 20 20 21;
-  --foreground: 237 237 237;
+    --background: 20 20 21;
+    --foreground: 237 237 237;
 
-  --color-primary: 130 119 255;
-  --color-secondary: 56 214 255;
-  --color-neutral: 64 64 64;
+    --color-primary: 130 119 255;
+    --color-secondary: 56 214 255;
+    --color-neutral: 64 64 64;
 }
 
 /* --------------------
    Tailwind theme bridge
 -------------------- */
 @theme inline {
-  --color-background: rgb(var(--background));
-  --color-foreground: rgb(var(--foreground));
+    --color-background: rgb(var(--background));
+    --color-foreground: rgb(var(--foreground));
 
-  --color-primary: rgb(var(--color-primary));
-  --color-secondary: rgb(var(--color-secondary));
-  --color-neutral: rgb(var(--color-neutral));
+    --color-primary: rgb(var(--color-primary));
+    --color-secondary: rgb(var(--color-secondary));
+    --color-neutral: rgb(var(--color-neutral));
 
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
 }
 
 /* --------------------
    Base styles
 -------------------- */
 body {
-  background-color: rgb(var(--background));
-  color: rgb(var(--foreground));
-  font-family: var(--font-sans), sans-serif;
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-family: var(--font-sans), sans-serif;
 }

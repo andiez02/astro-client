@@ -102,18 +102,18 @@ export function BaseModal({
             .replace(/\s+/g, ' ')
 
         return (
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode='wait'>
                 {open && (
                     <Dialog.Root open={open} onOpenChange={o => !o && onClose()}>
                         <Dialog.Portal forceMount>
                             {/* Overlay */}
                             <Dialog.Overlay asChild>
                                 <motion.div
-                                    className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+                                    className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm'
                                     variants={overlayVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="exit"
+                                    initial='hidden'
+                                    animate='visible'
+                                    exit='exit'
                                 />
                             </Dialog.Overlay>
 
@@ -122,9 +122,9 @@ export function BaseModal({
                                 <motion.div
                                     className={fullscreenClassName}
                                     variants={fullscreenVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="exit"
+                                    initial='hidden'
+                                    animate='visible'
+                                    exit='exit'
                                     style={{ willChange: 'opacity' }}
                                 >
                                     <Dialog.Title
@@ -137,18 +137,16 @@ export function BaseModal({
                                         {title ?? 'Dialog'}
                                     </Dialog.Title>
 
-                                    <Dialog.Description className="sr-only">
+                                    <Dialog.Description className='sr-only'>
                                         {description || ''}
                                     </Dialog.Description>
 
-                                    <div className="h-full overflow-auto p-6">
-                                        {children}
-                                    </div>
+                                    <div className='h-full overflow-auto p-6'>{children}</div>
 
                                     <Dialog.Close asChild>
                                         <button
-                                            aria-label="Close"
-                                            className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center
+                                            aria-label='Close'
+                                            className='absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center
                                             cursor-pointer rounded-full 
                                             border border-white/20 
                                             bg-white/10 backdrop-blur-xl backdrop-saturate-150 backdrop-brightness-110
@@ -156,9 +154,9 @@ export function BaseModal({
                                             text-gray-700
                                             transition-all duration-200
                                             hover:bg-white/20 hover:border-white/30 hover:shadow-xl hover:shadow-black/20
-                                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+                                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20'
                                         >
-                                            <X className="w-4 h-4" />
+                                            <X className='w-4 h-4' />
                                         </button>
                                     </Dialog.Close>
                                 </motion.div>
@@ -188,18 +186,18 @@ export function BaseModal({
         .replace(/\s+/g, ' ')
 
     return (
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode='wait'>
             {open && (
                 <Dialog.Root open={open} onOpenChange={o => !o && onClose()}>
                     <Dialog.Portal forceMount>
                         {/* Overlay */}
                         <Dialog.Overlay asChild>
                             <motion.div
-                                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+                                className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm'
                                 variants={overlayVariants}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
                             />
                         </Dialog.Overlay>
 
@@ -208,20 +206,18 @@ export function BaseModal({
                             <motion.div
                                 className={modalClassName}
                                 variants={modalVariants}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
                                 style={{ willChange: 'transform, opacity' }}
                             >
                                 <Dialog.Title
-                                    className={
-                                        title ? 'mb-4 text-lg font-semibold' : 'sr-only'
-                                    }
+                                    className={title ? 'mb-4 text-lg font-semibold' : 'sr-only'}
                                 >
                                     {title ?? 'Dialog'}
                                 </Dialog.Title>
 
-                                <Dialog.Description className="sr-only">
+                                <Dialog.Description className='sr-only'>
                                     {description || ''}
                                 </Dialog.Description>
 
@@ -229,8 +225,8 @@ export function BaseModal({
 
                                 <Dialog.Close asChild>
                                     <button
-                                        aria-label="Close"
-                                        className="cursor-pointer absolute right-4 top-4 inline-flex size-7 items-center justify-center
+                                        aria-label='Close'
+                                        className='cursor-pointer absolute right-4 top-4 inline-flex size-7 items-center justify-center
                                         rounded-full 
                                         border border-white/20 
                                         bg-white/10 backdrop-blur-xl backdrop-saturate-150 backdrop-brightness-110
@@ -238,9 +234,9 @@ export function BaseModal({
                                         text-gray-700
                                         transition-all duration-200
                                         hover:bg-white/20 hover:border-white/30 hover:shadow-xl hover:shadow-black/20
-                                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+                                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20'
                                     >
-                                        <X className="w-4 h-4 text-white" />
+                                        <X className='w-4 h-4 text-white' />
                                     </button>
                                 </Dialog.Close>
                             </motion.div>

@@ -4,39 +4,35 @@ import { useTheme } from 'next-themes'
 import { useSyncExternalStore } from 'react'
 
 function subscribe() {
-  return () => {}
+    return () => {}
 }
 
 function getSnapshot() {
-  return true
+    return true
 }
 
 function getServerSnapshot() {
-  return false
+    return false
 }
 
 export function useThemeClient() {
-  const mounted = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot
-  )
+    const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  const { theme, setTheme, resolvedTheme } = useTheme()
+    const { theme, setTheme, resolvedTheme } = useTheme()
 
-  if (!mounted) {
-    return {
-      theme: undefined,
-      resolvedTheme: undefined,
-      setTheme,
-      mounted: false,
+    if (!mounted) {
+        return {
+            theme: undefined,
+            resolvedTheme: undefined,
+            setTheme,
+            mounted: false,
+        }
     }
-  }
 
-  return {
-    theme,
-    resolvedTheme,
-    setTheme,
-    mounted: true,
-  }
+    return {
+        theme,
+        resolvedTheme,
+        setTheme,
+        mounted: true,
+    }
 }

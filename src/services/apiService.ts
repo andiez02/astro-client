@@ -1,12 +1,12 @@
-import apiClient from "./apiClient";
-import AuthService from "./controllers/auth/AuthService";
+import apiClient from './apiClient'
+import AuthService from './controllers/auth/AuthService'
 
 export class ApiService {
- public auth: AuthService;
+    public auth: AuthService
 
- constructor() {
-    this.auth = new AuthService(apiClient);
- }
+    constructor() {
+        this.auth = new AuthService(apiClient)
+    }
 }
 
-export const api = new ApiService();
+export const api = new ApiService()

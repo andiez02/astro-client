@@ -1,55 +1,54 @@
-import { createAuthenticationAdapter } from '@rainbow-me/rainbowkit';
-import { SiweMessage } from 'siwe';
-import { getAccount } from 'wagmi/actions';
-import { config } from './wagmi';
-import { api } from '@/src/services/apiService';
+import { createAuthenticationAdapter } from '@rainbow-me/rainbowkit'
+import { SiweMessage } from 'siwe'
+import { getAccount } from 'wagmi/actions'
+import { config } from './wagmi'
+import { api } from '@/src/services/apiService'
 
 export const authenticationAdapter = createAuthenticationAdapter({
-  getNonce: async () => {
-    // Get connected address from wagmi
-    const account = getAccount(config);
-    
-    if (!account.address) {
-      throw new Error('Wallet not connected');
-    }
+    getNonce: async () => {
+        // Get connected address from wagmi
+        const account = getAccount(config)
 
-    // Fetch nonce from backend
-    const nonce = await api.auth.getNonce(account.address);
-    return nonce;
-  },
+        if (!account.address) {
+            throw new Error('Wallet not connected')
+        }
 
-  createMessage: ({ nonce, address, chainId }) => {
-    return new SiweMessage({
-      domain: window.location.host,
-      address,
-      statement: 'Sign in with Ethereum to Astro Marketplace.',
-      uri: window.location.origin,
-      version: '1',
-      chainId,
-      nonce,
-    });
-  },
+        // Fetch nonce from backend
+        const nonce = await api.auth.getNonce(account.address)
+        return nonce
+    },
 
-  verify: async ({ message, signature }) => {
-    try {
-      const siweMessage = message as SiweMessage;
-      const messageString = siweMessage.prepareMessage();
+    createMessage: ({ nonce, address, chainId }) => {
+        return new SiweMessage({
+            domain: window.location.host,
+            address,
+            statement: 'Sign in with Ethereum to Astro Marketplace.',
+            uri: window.location.origin,
+            version: '1',
+            chainId,
+            nonce,
+        })
+    },
 
-      // Call backend to verify and get token
-      const { accessToken } = await api.auth.login(messageString, signature);
+    verify: async ({ message, signature }) => {
+        try {
+            const siweMessage = message as SiweMessage
+            const messageString = siweMessage.prepareMessage()
 
-      // Save token to localStorage
-      api.auth.saveToken(accessToken);
+            // Call backend to verify and get token
+            const { accessToken } = await api.auth.login(messageString, signature)
 
-      return true;
-    } catch (error) {
-      console.error('Verification error:', error);
-      return false;
-    }
-  },
+            // Save token to localStorage
+            api.auth.saveToken(accessToken)
 
-  signOut: async () => {
-    api.auth.logout();
-  },
-});
+            return true
+        } catch (error) {
+            console.error('Verification error:', error)
+            return false
+        }
+    },
 
+    signOut: async () => {
+        api.auth.logout()
+    },
+})

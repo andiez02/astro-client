@@ -1,12 +1,10 @@
 'use client'
 
 import { createContext, useReducer } from 'react'
-import ModalHost from '../modal/ModalHost';
-import { ModalState } from '../modal/modal.type';
+import ModalHost from '../../modal/ModalHost'
+import { ModalState } from '../../modal/modal.type'
 
-type Action =
-    | { type: 'OPEN'; modal: ModalState }
-    | { type: 'CLOSE' }
+type Action = { type: 'OPEN'; modal: ModalState } | { type: 'CLOSE' }
 
 export const ModalContext = createContext<{
     state: ModalState
@@ -39,4 +37,3 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         </ModalContext.Provider>
     )
 }
-

@@ -8,16 +8,16 @@ export function ThemeToggle() {
     if (!mounted) return null
 
     return (
-        <div className="flex gap-2">
-            <button onClick={() => setTheme('light')} className="cursor-pointer">
+        <div className='flex gap-2'>
+            <button onClick={() => setTheme('light')} className='cursor-pointer'>
                 🌞
             </button>
 
-            <button onClick={() => setTheme('dark')} className="cursor-pointer">
+            <button onClick={() => setTheme('dark')} className='cursor-pointer'>
                 🌙
             </button>
 
-            <button onClick={() => setTheme('system')} className="cursor-pointer">
+            <button onClick={() => setTheme('system')} className='cursor-pointer'>
                 💻
             </button>
         </div>
