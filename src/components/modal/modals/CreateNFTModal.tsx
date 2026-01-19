@@ -25,6 +25,7 @@ export function CreateNFTModal({
     ] as const
 
     const [activeTab, setActiveTab] = useState<(typeof tabs)[number]['id']>('nft')
+    const [imageLoaded, setImageLoaded] = useState(false)
 
     const getBackgroundImage = () => {
         switch (activeTab) {
@@ -114,7 +115,10 @@ export function CreateNFTModal({
                                 <button
                                     key={tab.id}
                                     type="button"
-                                    onClick={() => setActiveTab(tab.id)}
+                                    onClick={() => {
+                                        setActiveTab(tab.id)
+                                        setImageLoaded(false)
+                                    }}
                                     className={`
                                         flex items-center gap-2 px-3 py-2 rounded-lg text-md font-semibold
                                         transition-colors cursor-pointer text-left
@@ -133,60 +137,87 @@ export function CreateNFTModal({
                 </div>
 
                 <div className="relative w-3/4 min-h-[260px] overflow-hidden rounded-r-lg">
-                    <Image
-                        src={getBackgroundImage()}
-                        alt="Create NFT"
-                        fill
-                        className="object-cover"
-                        priority
-                    />
+                    {/* Loading skeleton */}
+                    {!imageLoaded && (
+                        <div className="absolute inset-0 bg-linear-to-br from-gray-200 via-gray-300 to-gray-200 animate-pulse" />
+                    )}
+
+                    {/* Image with fade-in animation */}
+                    <motion.div
+                        className="absolute inset-0"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: imageLoaded ? 1 : 0 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <Image
+                            src={getBackgroundImage()}
+                            alt="Create NFT"
+                            fill
+                            className="object-cover"
+                            priority
+                            onLoad={() => setImageLoaded(true)}
+                        />
+                    </motion.div>
 
                     {/* Optional overlay for better contrast */}
-                    <div className="absolute inset-0 bg-black/30" />
+                    <motion.div
+                        className="absolute inset-0 bg-black/30"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: imageLoaded ? 1 : 0 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    />
 
                     {/* Gradient fade effect for entire right tab area */}
-                    <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/40 to-transparent" />
+                    <motion.div
+                        className="absolute inset-0 bg-linear-to-r from-black/60 via-black/40 to-transparent"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: imageLoaded ? 1 : 0 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    />
 
-                    <div className="relative flex h-full w-full items-end justify-between p-6 gap-4">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeTab}
-                                className="flex flex-col items-start gap-3 max-w-md pb-4"
-                                variants={contentVariants}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
+                    {/* Content - only show when image is loaded */}
+                    {imageLoaded && (
+                        <div className="relative flex h-full w-full items-end justify-between p-6 gap-4">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeTab}
+                                    className="flex flex-col items-start gap-3 max-w-md pb-4"
+                                    variants={contentVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                >
+                                    {(() => {
+                                        const content = getTabContent()
+                                        const ContentIcon = content.Icon
+                                        return (
+                                            <>
+                                                <ContentIcon className="size-8 text-white shrink-0 mt-0.5" />
+                                                <div className="flex flex-col gap-1">
+                                                    <h3 className="text-4xl font-semibold text-white">
+                                                        {content.title}
+                                                    </h3>
+                                                    <p className="text-md text-white/90">
+                                                        {content.description}
+                                                    </p>
+                                                </div>
+                                            </>
+                                        )
+                                    })()}
+                                </motion.div>
+                            </AnimatePresence>
+                            <motion.button
+                                type="button"
+                                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 text-gray-900 text-md font-semibold shadow-md hover:bg-white transition-colors cursor-pointer mb-2"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                             >
-                                {(() => {
-                                    const content = getTabContent()
-                                    const ContentIcon = content.Icon
-                                    return (
-                                        <>
-                                            <ContentIcon className="size-8 text-white shrink-0 mt-0.5" />
-                                            <div className="flex flex-col gap-1">
-                                                <h3 className="text-4xl font-semibold text-white">
-                                                    {content.title}
-                                                </h3>
-                                                <p className="text-md text-white/90">
-                                                    {content.description}
-                                                </p>
-                                            </div>
-                                        </>
-                                    )
-                                })()}
-                            </motion.div>
-                        </AnimatePresence>
-                        <motion.button
-                            type="button"
-                            className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 text-gray-900 text-md font-semibold shadow-md hover:bg-white transition-colors cursor-pointer mb-2"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            Create
-                            <PlusIcon className="size-4" />
-                        </motion.button>
-                    </div>
+                                Create
+                                <PlusIcon className="size-4" />
+                            </motion.button>
+                        </div>
+                    )}
                 </div>
             </div>
         </BaseModal>
