@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { useAccount, useSignMessage, useChainId, useSwitchChain } from 'wagmi'
 import { SiweMessage } from 'siwe'
 import { api } from '@/src/services/apiService'
-import { SEPOLIA_CHAIN_ID } from '../utils/constants'
+import { APP_CHAIN_ID } from '../utils/constants'
 
 export function useAutoLogin() {
     const { address, isConnected } = useAccount()
@@ -57,12 +57,12 @@ export function useAutoLogin() {
 
             try {
                 // Check if on wrong chain and switch if needed
-                if (chainId !== SEPOLIA_CHAIN_ID) {
-                    console.log('⚠️ Wrong chain detected:', chainId, '- Switching to Sepolia...')
+                if (chainId !== APP_CHAIN_ID) {
+                    console.log('⚠️ Wrong chain detected:', chainId, '- Switching to app chain...', APP_CHAIN_ID)
 
                     try {
-                        await switchChainAsync({ chainId: SEPOLIA_CHAIN_ID })
-                        console.log('✅ Switched to Sepolia')
+                        await switchChainAsync({ chainId: APP_CHAIN_ID })
+                        console.log('✅ Switched to app chain')
                         // After chain switch, the effect will re-run with new chainId
                         // Reset flag to allow re-attempt
                         isLoggingIn.current = false
@@ -88,7 +88,7 @@ export function useAutoLogin() {
                     statement: 'Sign in with Ethereum to Astro Marketplace.',
                     uri: window.location.origin,
                     version: '1',
-                    chainId: SEPOLIA_CHAIN_ID,
+                    chainId: APP_CHAIN_ID,
                     nonce,
                 })
 

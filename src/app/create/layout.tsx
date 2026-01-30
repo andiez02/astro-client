@@ -1,5 +1,13 @@
-import React from 'react'
+import { MintProvider } from "@/src/components/providers/MintProvider";
 
-export default function CreateLayout({ children }: { children: React.ReactNode }) {
-    return <div>{children}</div>
+export default function CreateLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <MintProvider>
+            {children}
+        </MintProvider>
+    );
 }

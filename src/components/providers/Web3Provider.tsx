@@ -10,7 +10,6 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 const queryClient = new QueryClient()
 
-// Component to trigger auto-login after wallet connects
 function AutoLoginHandler({ children }: { children: React.ReactNode }) {
     useAutoLogin()
     return <>{children}</>

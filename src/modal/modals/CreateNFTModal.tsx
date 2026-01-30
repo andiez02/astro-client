@@ -125,9 +125,10 @@ export function CreateNFTModal({ onClose }: { onClose: () => void }) {
                                     className={`
                                         flex items-center gap-2 px-3 py-2 rounded-lg text-md font-semibold
                                         transition-colors cursor-pointer text-left
-                                        ${isActive
-                                            ? 'bg-gray-200'
-                                            : 'bg-transparent hover:bg-gray-100'
+                                        ${
+                                            isActive
+                                                ? 'bg-gray-200'
+                                                : 'bg-transparent hover:bg-gray-100'
                                         }
                                     `}
                                 >
@@ -205,8 +206,8 @@ export function CreateNFTModal({ onClose }: { onClose: () => void }) {
                             <motion.button
                                 type='button'
                                 onClick={() => {
-                                    router.push(activeContent.route)
                                     onClose()
+                                    router.push(activeContent.route)
                                 }}
                                 className='flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 text-gray-900 text-md font-semibold shadow-md hover:bg-white transition-colors cursor-pointer mb-2'
                                 initial={{ opacity: 0, y: 20 }}

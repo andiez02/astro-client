@@ -10,52 +10,52 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-inter',
 })
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-poppins',
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700'],
+    display: 'swap',
+    variable: '--font-poppins',
 })
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-jetbrains-mono',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-jetbrains-mono',
 })
 
 export const metadata: Metadata = {
-  title: 'Astro Marketplace',
-  description: 'Astro Marketplace',
+    title: 'Astro Marketplace',
+    description: 'Astro Marketplace',
 }
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode
+    children: React.ReactNode
 }>) {
-  return (
-    <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${poppins.variable} ${jetbrainsMono.variable} font-sans antialiased`}
-      >
-        <SuppressLitWarning />
-        <ThemeProvider>
-          <Web3Provider>
-            <ModalProvider>
-              <Analytics />
-              <SpeedInsights />
-              <Toaster position='bottom-right' richColors closeButton />
+    return (
+        <html lang='en' suppressHydrationWarning>
+            <body
+                className={`${inter.variable} ${poppins.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+            >
+                <SuppressLitWarning />
+                <ThemeProvider>
+                    <Web3Provider>
+                        <ModalProvider>
+                            <Analytics />
+                            <SpeedInsights />
+                            <Toaster position='bottom-right' richColors closeButton />
 
-              {children}
-            </ModalProvider>
-          </Web3Provider>
-        </ThemeProvider>
-      </body>
-    </html>
-  )
+                            {children}
+                        </ModalProvider>
+                    </Web3Provider>
+                </ThemeProvider>
+            </body>
+        </html>
+    )
 }
